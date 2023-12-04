@@ -5,7 +5,14 @@
 typedef char Typ; 
 
 
-typedef struct TreeNode{
+typedef struct Node {
+		Typ tag[9];
+		int status;
+		struct Node* next;
+} Node;
+
+
+typedef struct TreeNode {
 	Typ tag[9];
 	int status;
 	struct TreeNode *left;
@@ -13,8 +20,22 @@ typedef struct TreeNode{
 }TreeNode;
 
 
+Node* insertNode(Node* head, Typ tag[9], int status) {
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	strcpy(newNode->tag, tag);
+	newNode->next = NULL;
 
-Node* insertNode(Node* head, Typ tag[9], int status);
+	if (head == NULL) {
+		head = newNode;
+	} else {
+		Node* temp = head;
+		while(temp->next != NULL) {
+			temp = temp->next;
+		}
+		temp->next = newNode;
+	}
+	return head;
+}
 
 
 TreeNode* insertTreeNode(TreeNode* root, Typ tag[9], int status){
@@ -41,4 +62,19 @@ TreeNode* insertTreeNode(TreeNode* root, Typ tag[9], int status){
 }
 
 
+void printList(Node* head) {
+	Node* temp = head;
+	while (temp != NULL) {
+		printf("%s %d\n", temp->tag, temp->status);
+		temp = temp->next;
+	}
+}
 
+
+void printTree(TreeNode* root) {
+	if (root != NULL) {
+		printf("%s %d\n", root->tag, root->status);
+		printTree(root->left);
+		printTree(root->right);
+	}
+}
