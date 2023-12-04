@@ -78,3 +78,11 @@ void printTree(TreeNode* root) {
 		printTree(root->right);
 	}
 }
+
+
+void printResult(){
+	int nodes_found;
+	int v_nodes;
+	int v_nodes_tree;
+	printf("S:%d NL:%d NA: %d", nodes_found, v_nodes, v_nodes_tree);
+}
