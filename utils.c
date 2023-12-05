@@ -1,88 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef char Typ; 
-
-
-typedef struct Node {
-		Typ tag[9];
-		int status;
-		struct Node* next;
-} Node;
+#include "BinaryTree.h"
 
 
-typedef struct TreeNode {
-	Typ tag[9];
-	int status;
-	struct TreeNode *left;
-	struct TreeNode *right;
-}TreeNode;
-
-
-Node* insertNode(Node* head, Typ tag[9], int status) {
-	Node* newNode = (Node*)malloc(sizeof(Node));
-	strcpy(newNode->tag, tag);
-	newNode->next = NULL;
-
-	if (head == NULL) {
-		head = newNode;
-	} else {
-		Node* temp = head;
-		while(temp->next != NULL) {
-			temp = temp->next;
-		}
-		temp->next = newNode;
+void execMode(struct Node* root) {
+	int command;
+	scanf("%d", &command);
+	if(command == 0){
+		int height = treeHeight(root);
+		printf("NA:%d", height);
 	}
-	return head;
-}
-
-
-TreeNode* insertTreeNode(TreeNode* root, Typ tag[9], int status){
-	if (root == NULL) {
-		TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
-		if (newNode == NULL) {
-			exit(EXIT_FAILURE);
-		}
-		newNode->left = NULL;
-		newNode->right = NULL;
-		strcpy(newNode->tag, tag);
-		newNode->status = status;
-		return newNode;
+	if(command == 1){
 	}
-
-	int cmp = strcmp(tag, root->tag);
-	if (cmp < 0) {
-		root->left = insertTreeNode(root->left, tag, status);
-	} else if (cmp > 0) {
-		root->right = insertTreeNode(root->right, tag, status);
+	if(command == 2){
 	}
-
-	return root;
-}
-
-
-void printList(Node* head) {
-	Node* temp = head;
-	while (temp != NULL) {
-		printf("%s %d\n", temp->tag, temp->status);
-		temp = temp->next;
+	if(command == 3){
+		preOrder(&root);
 	}
 }
 
 
-void printTree(TreeNode* root) {
-	if (root != NULL) {
-		printf("%s %d\n", root->tag, root->status);
-		printTree(root->left);
-		printTree(root->right);
+char* readFile() {
+	FILE *file = fopen("arq.txt", "r");
+	
+	if (file == NULL) {
+		exit(EXIT_FAILURE);
 	}
+	
+	fseek(file, 0, SEEK_END);
+	long file_size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+
+	char *text = (char*) malloc(file_size + 1);
+	if (text == NULL) {
+		exit(EXIT_FAILURE);
+	}
+
+	size_t data_read = fread(text, 1, file_size, file);
+	if (data_read != file_size) {
+		exit(EXIT_FAILURE);
+	}
+	
+	text[file_size] = '\0';
+
+	fclose(file);
+
+	return text;
+
 }
 
 
-void printResult(){
-	int nodes_found;
-	int v_nodes;
-	int v_nodes_tree;
-	printf("S:%d NL:%d NA: %d", nodes_found, v_nodes, v_nodes_tree);
-}
